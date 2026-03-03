@@ -1,0 +1,448 @@
+/* ============================================================
+BLOCO 1: Tokens e temas
+O que faz: define cores base e variantes claro/escuro.
+Como faz: expõe custom properties e sobrescreve via data-theme.
+============================================================ */
+:root {
+  --color-bg: #0f1216;
+  --color-surface: #161b22;
+  --color-surface-2: #1f2630;
+  --color-text: #e6edf3;
+  --color-muted: #9aa7b2;
+  --color-primary: #4aa3ff;
+  --color-primary-600: #1f8bff;
+  --color-accent: #7c4dff;
+  --color-success: #2ecc71;
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.3);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --container: 1100px;
+}
+
+[data-theme="light"] {
+  --color-bg: #e9edf2;
+  --color-surface: #f5f7fa;
+  --color-surface-2: #eef2f6;
+  --color-text: #2a3038;
+  --color-muted: #616a75;
+  --color-primary: #2b6adf;
+  --color-primary-600: #255cc7;
+  --color-accent: #6a5bd7;
+  --color-success: #1a9c54;
+  --shadow-lg: 0 20px 40px rgba(2, 6, 23, 0.12);
+  --shadow-md: 0 10px 20px rgba(2, 6, 23, 0.10);
+}
+
+/* ============================================================
+BLOCO 2: Reset e estrutura base
+O que faz: padroniza box-sizing, smooth scroll e layout global.
+Como faz: estiliza seletores raiz e container principal.
+============================================================ */
+* { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth; /* transição suave entre âncoras */
+}
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(1000px 600px at 0% 0%, rgba(74,163,255,0.12), transparent 60%),
+              radial-gradient(800px 500px at 100% 100%, rgba(124,77,255,0.10), transparent 60%),
+              var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.main-content {
+  max-width: var(--container);
+  padding: 100px 20px 60px; /* espaço para a navbar fixa */
+  margin: 0 auto;
+}
+
+/* ============================================================
+BLOCO 3: Navbar e controles de tema/login
+O que faz: constrói navegação fixa, logos dinâmicos, hover e toggle do modo escuro.
+Como faz: usa flex, states de anchor e botões com gradiente.
+============================================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(180deg, rgba(15,18,22,0.45) 0%, rgba(15,18,22,0.25) 100%);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.navbar-container {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+}
+.logo a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-img { height: 28px; width: auto; }
+
+/* Alterna logos conforme tema via utilitários (opcional também via JS) */
+body .light-logo { display: none; }
+body .dark-logo { display: inline-block; }
+[data-theme="light"] .light-logo { display: inline-block; }
+[data-theme="light"] .dark-logo { display: none; }
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.navbar ul li a {
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  position: relative;
+  transition: color .2s ease;
+}
+
+.navbar ul li .login-link {
+  background: linear-gradient(90deg, var(--color-primary-600), var(--color-accent));
+  color: #fff !important;
+  padding: 10px 16px;
+}
+
+.navbar ul li .login-link:hover {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  color: #fff !important;
+}
+
+.navbar ul li .login-link::after {
+  display: none;
+}
+
+/* Hover com sublinhado deslizante */
+.navbar ul li a::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+.navbar ul li a:hover::after { transform: scaleX(1); }
+.navbar ul li a:hover { color: var(--color-primary); }
+
+.dark-mode-toggle {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.dark-mode-toggle:hover { transform: translateY(-1px); background: var(--color-surface); }
+
+/* Navbar no tema claro: azul semelhante ao sublinhado dos títulos */
+[data-theme="light"] .navbar {
+  background: linear-gradient(180deg, rgba(43,106,223,0.45) 0%, rgba(37,92,199,0.35) 100%);
+  border-bottom: 1px solid rgba(37,92,199,0.30);
+}
+[data-theme="light"] .navbar .logo a { color: #ffffff; }
+[data-theme="light"] .navbar ul li a { color: #ffffff; }
+[data-theme="light"] .navbar ul li a:hover { color: #e9edf2; }
+[data-theme="light"] .dark-mode-toggle {
+  background: rgba(255,255,255,0.18);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.28);
+}
+[data-theme="light"] .dark-mode-toggle:hover {
+  background: rgba(255,255,255,0.26);
+}
+
+/* ============================================================
+BLOCO 4: Seções e títulos destacados
+O que faz: define espaçamentos entre seções e estiliza títulos .blu com áudio.
+Como faz: aplica margins, gradientes e pseudo-elementos indicadores.
+============================================================ */
+.section { 
+  margin: 120px 0; /* Aumentado de 80px para 120px */
+  scroll-margin-top: 100px; /* Compensa a navbar fixa */
+}
+/* Reduz o espaçamento superior da primeira seção (Bem-vindo) */
+.section:first-of-type {
+  margin-top: 40px;
+}
+.section p { color: var(--color-muted); }
+
+/* Títulos destacados com barra/gradiente e marcador lateral indicando navegação */
+.blu {
+  position: relative;
+  margin: 0 0 16px 0;
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, var(--color-text), var(--color-primary-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.blu .audio-btn { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  margin-left: 10px; 
+  background: var(--color-surface-2); 
+  color: var(--color-text); 
+  border: 1px solid rgba(255,255,255,0.12); 
+  border-radius: 10px; 
+  padding: 6px 8px; 
+  cursor: pointer; 
+  transition: transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.blu .audio-btn:hover { 
+  transform: translateY(-1px); 
+  background: var(--color-surface); 
+  border-color: rgba(74,163,255,0.35);
+  color: var(--color-primary);
+}
+.blu::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 70%;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+  box-shadow: 0 10px 20px rgba(74,163,255,0.25);
+}
+.blu::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 140px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--color-primary), transparent);
+}
+
+/* ============================================================
+BLOCO 5: Grades e cards
+O que faz: monta grids de destaques, serviços e membros, com efeitos hover.
+Como faz: usa CSS Grid, sombras e pseudo-elementos decorativos.
+============================================================ */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+/* Grade de imagens 3x2 para a seção de membros */
+.portfolio-grid.images {
+  grid-template-columns: repeat(3, 1fr);
+}
+.portfolio-grid.images .portfolio-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.portfolio-grid.images .portfolio-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+}
+.portfolio-grid.images .portfolio-item:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(74,163,255,0.35);
+}
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0)) , var(--color-surface);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow-md);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto auto;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(closest-side, rgba(74,163,255,0.18), transparent 70%);
+  transform: translate(30px, -30px) rotate(25deg);
+  pointer-events: none;
+}
+.card h3 { margin: 0 0 8px; }
+.card p { margin: 0; color: var(--color-muted); }
+.card:hover {
+  transform: translateY(-8px) scale(1.01); /* efeito flutuante */
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(74,163,255,0.35);
+}
+
+/* Cartões de membros (mantendo estética existente) */
+.member-card { text-align: center; }
+.member-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 14px;
+  border: 3px solid rgba(74,163,255,0.35);
+}
+.member-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.member-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Ajuste específico: garantir que o rosto do primeiro membro apareça */
+#membros .member-card:first-child .member-photo img {
+  object-position: center 20%;
+}
+.member-name { margin: 6px 0 6px; }
+.member-bio { color: var(--color-muted); margin: 0 0 10px; }
+.member-role {
+  font-weight: 700;
+  margin: 0 0 8px;
+  font-size: 1.08rem;
+  color: var(--color-primary-600);
+}
+.member-social { display: flex; justify-content: center; gap: 12px; }
+.member-social a { color: var(--color-text); }
+.member-social a:hover { color: var(--color-primary); }
+
+/* Duas colunas para a lista de membros */
+#membros .portfolio-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 720px) {
+  #membros .portfolio-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+BLOCO 6: Formulário de contato
+O que faz: organiza campos, estados de foco e botão de envio.
+Como faz: grid responsivo, sombras de foco e gradiente no botão.
+============================================================ */
+.contact-form { margin-top: 16px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { margin-bottom: 12px; }
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--color-muted); }
+.contact-form input:focus, .contact-form textarea:focus {
+  border-color: rgba(74,163,255,0.45);
+  box-shadow: 0 0 0 4px rgba(74,163,255,0.15);
+}
+.contact-form textarea { min-height: 140px; resize: vertical; }
+.submit-btn {
+  background: linear-gradient(90deg, var(--color-primary-600), var(--color-accent));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 24px rgba(31,139,255,0.25);
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 30px rgba(31,139,255,0.32); }
+
+/* ============================================================
+BLOCO 7: Toast de feedback
+O que faz: posiciona alerta confirmando envio do formulário.
+Como faz: elemento fixo com sombra leve e borda translúcida.
+============================================================ */
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  background: var(--color-surface);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--color-text);
+  padding: 12px 14px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  z-index: 1100;
+}
+
+/* ============================================================
+BLOCO 8: Rodapé institucional
+O que faz: agrupa contatos, endereço e redes sociais.
+Como faz: grid adaptável e barra final de direitos autorais.
+============================================================ */
+footer {
+  margin-top: 60px;
+  background: linear-gradient(180deg, var(--color-surface), rgba(0,0,0,0));
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.footer-content {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 28px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.footer-section h3 { margin-top: 0; }
+.footer-section a { color: var(--color-text); text-decoration: none; display: block; margin: 6px 0; }
+.footer-section a:hover { color: var(--color-primary); }
+.copyright {
+  text-align: center;
+  color: var(--color-muted);
+  padding: 16px 0 28px;
+}
+
+/* Indicador visual ao navegar: animação de highlight na seção alvo */
+:target .blu::after {
+  animation: highlightBar 1.1s ease;
+}
+@keyframes highlightBar {
+  0% { width: 0; opacity: 0; }
+  30% { width: 160px; opacity: 1; }
+  100% { width: 140px; opacity: 1; }
+}
+
+/* Responsivo */
+@media (max-width: 720px) {
+  .form-row { grid-template-columns: 1fr; }
+  .navbar-container { padding: 12px 14px; }
+  .blu { font-size: 1.6rem; }
+  .portfolio-grid.images { grid-template-columns: repeat(2, 1fr); }
+}
+
+

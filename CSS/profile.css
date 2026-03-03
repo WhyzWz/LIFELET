@@ -1,0 +1,600 @@
+/* ============================================================
+BLOCO 1: Tokens e variáveis globais
+O que faz: Define paleta, sombras e raios usados na tela.
+Como faz: Usa :root para expor custom properties reutilizadas.
+============================================================ */
+:root {
+    --color-bg: #0f1216;
+    --color-surface: #161b22;
+    --color-surface-2: #1f2630;
+    --color-text: #e6edf3;
+    --color-muted: #9aa7b2;
+    --color-primary: #4aa3ff;
+    --color-primary-600: #1f8bff;
+    --color-accent: #7c4dff;
+    --color-success: #2ecc71;
+    --color-warning: #f39c12;
+    --color-danger: #e74c3c;
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.3);
+    --radius: 14px;
+}
+
+/* ============================================================
+BLOCO 2: Reset e base tipográfica
+O que faz: remove margens e padroniza fonte/cor/flex no body.
+Como faz: aplica box-sizing universal e configura body com gradiente.
+============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+    background: radial-gradient(1000px 600px at 0% 0%, rgba(74,163,255,0.12), transparent 60%),
+                radial-gradient(800px 500px at 100% 100%, rgba(124,77,255,0.10), transparent 60%),
+                var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ============================================================
+BLOCO 3: Botão de voltar para home
+O que faz: posiciona link fixo no canto superior direito.
+Como faz: fixed com z-index alto e estilo gradiente.
+============================================================ */
+.go-home-btn {
+    position: fixed;
+    top: 26px;
+    right: 28px;
+    z-index: 999;
+    background: linear-gradient(90deg, var(--color-primary-600), var(--color-accent));
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    padding: 10px 18px 10px 14px;
+    box-shadow: 0 2px 8px rgba(31,139,255,0.10);
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: background 0.2s, box-shadow 0.2s, color 0.16s;
+}
+
+.go-home-btn:hover {
+    color: #fff;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary-600));
+    box-shadow: 0 4px 12px rgba(31,139,255,0.18);
+}
+
+.go-home-btn i {
+    font-size: 1.1rem;
+}
+
+/* ============================================================
+BLOCO 4: Container principal
+O que faz: centraliza cartão de perfil com animação.
+Como faz: define largura máx., bordas e animação slideUp.
+============================================================ */
+.profile-container {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0)),
+                var(--color-surface);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+BLOCO 5: Cabeçalho do card
+O que faz: exibe logo e textos com separação visual.
+Como faz: padding dedicado, borda inferior e gradiente no título.
+============================================================ */
+.profile-header {
+    padding: 40px 30px 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logo-img {
+    height: 80px;
+    width: auto;
+    margin-bottom: 16px;
+}
+
+.profile-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, var(--color-text), var(--color-primary-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.profile-header p {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+BLOCO 6: Seção de informações do perfil
+O que faz: exibe foto, estatísticas e dados principais.
+Como faz: grid com foto centralizada e cards de estatísticas.
+============================================================ */
+.profile-info-section {
+    padding: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.profile-photo-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.profile-photo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-photo {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(74,163,255,0.35);
+    box-shadow: var(--shadow-md);
+}
+
+.profile-photo-placeholder {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    border: 4px solid rgba(74,163,255,0.35);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 3rem;
+}
+
+.photo-edit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(90deg, var(--color-primary-600), var(--color-accent));
+    color: #fff;
+    border: 3px solid var(--color-surface);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.photo-edit-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-lg);
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.stat-item {
+    background: var(--color-surface-2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+    border-color: rgba(74,163,255,0.35);
+    transform: translateY(-2px);
+}
+
+.stat-item i {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+}
+
+.stat-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+
+/* ============================================================
+BLOCO 7: Container de formulário
+O que faz: organiza campos de edição do perfil.
+Como faz: padding dedicado e estilos de inputs.
+============================================================ */
+.form-container {
+    padding: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.form-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-container h2 i {
+    color: var(--color-primary);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--color-text);
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    outline: none;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: rgba(74,163,255,0.45);
+    box-shadow: 0 0 0 4px rgba(74,163,255,0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--color-muted);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ============================================================
+BLOCO 8: Ações do formulário
+O que faz: estiliza botão de salvar e link de alterar senha.
+Como faz: flex com espaçamento e estilos diferenciados.
+============================================================ */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(90deg, var(--color-primary-600), var(--color-accent));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 12px 24px rgba(31,139,255,0.25);
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(31,139,255,0.32);
+}
+
+.change-password-link {
+    text-align: center;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.change-password-link:hover {
+    background: var(--color-surface-2);
+    color: var(--color-primary-600);
+}
+
+/* ============================================================
+BLOCO 9: Seção de preferências
+O que faz: exibe cards com opções de configuração.
+Como faz: grid com cards e toggle switches.
+============================================================ */
+.preferences-section {
+    padding: 30px;
+}
+
+.preferences-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.preferences-section h2 i {
+    color: var(--color-primary);
+}
+
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.preference-card {
+    background: var(--color-surface-2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+}
+
+.preference-card:hover {
+    border-color: rgba(74,163,255,0.35);
+    transform: translateY(-2px);
+}
+
+.preference-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.preference-header i {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.preference-header h3 {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--color-text);
+}
+
+.preference-card p {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+/* ============================================================
+BLOCO 10: Toggle switch
+O que faz: estiliza interruptor para preferências.
+Como faz: checkbox customizado com slider animado.
+============================================================ */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-surface);
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--color-text);
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: linear-gradient(90deg, var(--color-primary-600), var(--color-accent));
+    border-color: transparent;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* ============================================================
+BLOCO 11: Toasts de feedback
+O que faz: posiciona e anima notificações temporárias.
+Como faz: fixed bottom-right, sombra e classes para cores por tipo.
+============================================================ */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--color-text);
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 250px;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.toast.success {
+    border-left: 4px solid var(--color-success);
+}
+
+.toast.error {
+    border-left: 4px solid var(--color-danger);
+}
+
+.toast.warning {
+    border-left: 4px solid var(--color-warning);
+}
+
+/* ============================================================
+BLOCO 12: Regras responsivas
+O que faz: adapta container, paddings e grids em telas pequenas.
+Como faz: media query reduz espaçamentos e converte grids.
+============================================================ */
+@media (max-width: 600px) {
+    .profile-container {
+        margin: 10px;
+        max-width: 100%;
+    }
+
+    .profile-header {
+        padding: 30px 20px 20px;
+    }
+
+    .profile-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-container,
+    .preferences-section {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .preferences-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .go-home-btn {
+        top: 10px;
+        right: 12px;
+        padding: 8px 13px 8px 10px;
+        font-size: 0.93rem;
+    }
+}
+

@@ -1,0 +1,25 @@
+{
+    "name": "lifelet-api",
+    "version": "1.0.0",
+    "description": "API Lifelet - monitoramento de batimentos",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "start:dev": "nodemon server.js"
+    },
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "cors": "^2.8.5",
+      "dotenv": "^16.3.1",
+      "express": "^4.18.2",
+      "jsonwebtoken": "^9.0.0",
+      "mysql2": "^3.6.0"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.22"
+    },
+    "engines": {
+      "node": ">=16"
+    }
+  }
+  

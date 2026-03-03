@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<!-- =======================================================
+Bloco: Head da Página de Monitoramento
+O que faz: Define metadados, importa bibliotecas e estilos necessários.
+Como faz: Carrega Font Awesome, Chart.js para gráficos e CSS personalizado.
+======================================================= -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento Cardíaco - Lifelet</title>
+    <link rel="icon" href="../IMG/icone.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../CSS/index.css">
+</head>
+<body>
+    <!-- =======================================================
+    Bloco: Cabeçalho fixo com menu de perfil
+    O que faz: Exibe logo, título e menu dropdown do usuário.
+    Como faz: Header fixo com botão de perfil que abre dropdown com opções.
+    ======================================================= -->
+    <header class="monitor-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="../IMG/logo.png" alt="Lifelet Logo" class="logo-img">
+                <h1 class="site-title">Lifelet</h1>
+            </div>
+            <div class="profile-section">
+                <div class="profile-menu" id="profileMenu">
+                    <button class="profile-btn" id="profileBtn" aria-label="Menu do perfil">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="currentUser">Usuário</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <i class="fas fa-user"></i>
+                            <span id="dropdownUserName">Usuário</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item logout" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sair</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- =======================================================
+    Bloco: Conteúdo principal do monitoramento
+    O que faz: Exibe dashboard completo com métricas, gráficos e tabelas.
+    Como faz: Seções modulares que são atualizadas dinamicamente via JS.
+    ======================================================= -->
+    <main class="monitor-main">
+        <div class="container">
+            <!-- ---------------------------------------------------
+            Seção: Cabeçalho do Relatório
+            O que faz: Título e botões de controle (atualizar, período).
+            Como faz: Header com ações que disparam atualizações via JS.
+            --------------------------------------------------- -->
+            <div class="report-header">
+                <h1><i class="fas fa-heartbeat"></i> Monitoramento Cardíaco</h1>
+                <div class="header-actions">
+                    <button class="control-btn" id="refreshBtn" title="Atualizar dados">
+                        <i class="fas fa-sync-alt"></i>
+                        Atualizar
+                    </button>
+                    <button class="control-btn" id="dateRangeBtn" title="Alterar período">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDateRange">Últimos 7 dias</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ---------------------------------------------------
+            Seção: Dashboard de Batimentos Cardíacos
+            O que faz: Exibe três cards principais com métricas em tempo real.
+            Como faz: Cards atualizados dinamicamente com dados da API.
+            --------------------------------------------------- -->
+            <div class="heartbeat-dashboard">
+                <!-- Card 1: Batimentos Atuais -->
+                <div class="dashboard-card current-bpm-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-heart-pulse"></i> Batimentos Atuais</h3>
+                        <span class="card-badge live">AO VIVO</span>
+                    </div>
+                    <div class="current-bpm-display">
+                        <div class="bpm-value" id="currentBPM">--</div>
+                        <div class="bpm-label">BPM</div>
+                    </div>
+                    <div class="bpm-status" id="currentStatus">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Normal</span>
+                    </div>
+                    <div class="bpm-timestamp" id="currentTimestamp">
+                        Última leitura: --
+                    </div>
+                </div>
+
+                <!-- Card 2: Média de Batimentos -->
+                <div class="dashboard-card average-bpm-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-line"></i> Média Atual</h3>
+                        <span class="card-badge period">HOJE</span>
+                    </div>
+                    <div class="average-bpm-display">
+                        <div class="bpm-value" id="averageBPM">--</div>
+                        <div class="bpm-label">BPM</div>
+                    </div>
+                    <div class="average-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Mínimo</span>
+                            <span class="detail-value" id="minBPM">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Máximo</span>
+                            <span class="detail-value" id="maxBPM">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Variação</span>
+                            <span class="detail-value" id="variationBPM">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Status de Saúde -->
+                <div class="dashboard-card health-status-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-heart-circle-check"></i> Status de Saúde</h3>
+                    </div>
+                    <div class="health-indicators">
+                        <div class="indicator" id="zoneIndicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="indicator-info">
+                                <span class="indicator-label">Zona Cardíaca</span>
+                                <span class="indicator-value" id="heartZone">--</span>
+                            </div>
+                        </div>
+                        <div class="indicator" id="trendIndicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-chart-simple"></i>
+                            </div>
+                            <div class="indicator-info">
+                                <span class="indicator-label">Tendência</span>
+                                <span class="indicator-value" id="heartTrend">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="health-message" id="healthMessage">
+                        Aguardando dados...
+                    </div>
+                </div>
+            </div>
+
+            <!-- ---------------------------------------------------
+            Seção: Gráfico de Histórico
+            O que faz: Visualiza tendência dos batimentos nos últimos 7 dias.
+            Como faz: Usa Chart.js para renderizar gráfico de linha interativo.
+            --------------------------------------------------- -->
+            <div class="history-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Histórico da Média (Últimos 7 Dias)</h2>
+                </div>
+                <div class="history-chart-container">
+                    <canvas id="heartHistoryChart"></canvas>
+                </div>
+                <div class="history-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">Média 7 Dias</span>
+                        <span class="stat-value" id="weekAverage">--</span>
+                        <span class="stat-unit">BPM</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Maior Média</span>
+                        <span class="stat-value" id="highestAverage">--</span>
+                        <span class="stat-unit">BPM</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Menor Média</span>
+                        <span class="stat-value" id="lowestAverage">--</span>
+                        <span class="stat-unit">BPM</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Estabilidade</span>
+                        <span class="stat-value" id="stabilityScore">--</span>
+                        <span class="stat-unit">%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ---------------------------------------------------
+            Seção: Tabela de Leituras Recentes
+            O que faz: Lista as últimas leituras com status e tendências.
+            Como faz: Tabela populada dinamicamente com dados mais recentes.
+            --------------------------------------------------- -->
+            <div class="readings-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Leituras Recentes</h2>
+                    <button class="control-btn small" id="exportBtn">
+                        <i class="fas fa-download"></i>
+                        Exportar
+                    </button>
+                </div>
+                <div class="readings-table-container">
+                    <table class="readings-table">
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Batimentos (BPM)</th>
+                                <th>Status</th>
+                                <th>Tendência</th>
+                                <th>Duração</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentReadingsTable">
+                            <!-- Dados serão inseridos via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =======================================================
+    Bloco: Toast de notificações
+    O que faz: Exibe mensagens de feedback para o usuário.
+    Como faz: Div oculta que é exibida via JS com mensagens temporárias.
+    ======================================================= -->
+    <div class="toast" id="toastNotification" style="display: none;">
+        <i class="fas fa-info-circle"></i>
+        <span id="toastMessage">Mensagem</span>
+    </div>
+
+    <!-- =======================================================
+    Bloco: Scripts JavaScript
+    O que faz: Carrega API client e lógica de monitoramento.
+    Como faz: api.js fornece comunicação com backend, index.js gerencia UI.
+    ======================================================= -->
+    <script src="../JS/api.js"></script>
+    <script src="../JS/index.js"></script>
+</body>
+</html>
